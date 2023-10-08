@@ -21,15 +21,15 @@ def run_scrabble(rack):
     
     # Initial checks for input validity
     if not 2 <= len(rack) <= 7:
-        return "Error: Rack should contain between 2 to 7 characters.", 0
+        return ("Error: Rack should contain between 2 to 7 characters.", 0)
 
     # Check for more than two wildcards
     if rack.count('*') + rack.count('?') > 2:
-        return "Error: Rack should contain at most two wildcards.", 0
+        return ("Error: Rack should contain at most two wildcards.", 0)
     
     for char in rack:
         if not char.isalpha() and char not in ['*', '?']:
-            return f"Error: Invalid character '{char}' in rack. Only letters A-Z and wildcards are allowed.", 0
+            return (f"Error: Invalid character '{char}' in rack. Only letters A-Z and wildcards are allowed.", 0)
     
     # Generate valid words from the rack
     possible_words = _generate_words_from_rack(rack)
