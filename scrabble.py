@@ -44,31 +44,18 @@ def run_scrabble(rack):
 def _generate_words_from_rack(rack):
     """
     A helper function that generates all possible words from the given rack, considering wildcards.
-
-    Args:
-    - rack (str): The Scrabble rack.
-
-    Returns:
-    - list: A list of strings representing possible words.
     """
     rack = rack.upper()
-    possible_words = set()  # Using a set to automatically handle duplicates
+    possible_words = set()
     
-    # If the rack has wildcards, we'll replace them with each possible letter and generate permutations
     wildcards = ['*', '?']
-    wild = False
-    for wildcard in wildcards:
-        if wildcard in rack:
-            wild = True
-
-    if wild:
-        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-            temp_rack = rack
-            for wildcard in wildcards:
-                temp_rack = temp_rack.replace(wildcard, letter, 1)
-            for length in range(2, len(temp_rack) + 1):
-                for perm in permutations(temp_rack, length):
-                    possible_words.add(''.join(perm))
+    if any(wc in rack for wc in wildcards):  # if there's any wildcard in the rack
+        for letter1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            for letter2 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+                temp_rack = rack.replace('*', letter1, 1).replace('?', letter2, 1)
+                for length in range(2, len(temp_rack) + 1):
+                    for perm in permutations(temp_rack, length):
+                        possible_words.add(''.join(perm))
     else:
         for length in range(2, len(rack) + 1):
             for perm in permutations(rack, length):
