@@ -75,7 +75,3 @@ def _generate_words_from_rack(rack):
                 possible_words.add(''.join(perm))
     
     return list(possible_words)
-
-
-if __name__ == '__main__':
-    print(run_scrabble("1"))
