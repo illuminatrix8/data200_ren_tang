@@ -19,14 +19,13 @@ def run_scrabble(rack):
         raw_input = infile.readlines()
         valid_words = set(datum.strip('\n').upper() for datum in raw_input)
     
-    # Initial checks for input validity
-    if not 2 <= len(rack) <= 7:
-        return "Error: Rack should contain between 2 to 7 characters.", 0
-    
     for char in rack:
         if not char.isalpha() and char not in ['*', '?']:
             return f"Error: Invalid character '{char}' in rack. Only letters A-Z and wildcards are allowed.", 0
 
+    # Initial checks for input validity
+    if not 2 <= len(rack) <= 7:
+        return "Error: Rack should contain between 2 to 7 characters.", 0
     
     # Generate valid words from the rack
     possible_words = _generate_words_from_rack(rack)
@@ -72,3 +71,7 @@ def _generate_words_from_rack(rack):
                 possible_words.add(''.join(perm))
     
     return list(possible_words)
+
+
+if __name__ == '__main__':
+    print(run_scrabble("1"))
