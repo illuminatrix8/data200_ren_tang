@@ -24,8 +24,9 @@ def run_scrabble(rack):
         return "Error: Rack should contain between 2 to 7 characters.", 0
     
     for char in rack:
-        if not char.isalpha():
-            return f"Error: Invalid character '{char}' in rack. Only letters A-Z are allowed.", 0
+        if not char.isalpha() and char not in ['*', '?']:
+            return f"Error: Invalid character '{char}' in rack. Only letters A-Z and wildcards are allowed.", 0
+
     
     # Generate valid words from the rack
     possible_words = _generate_words_from_rack(rack)
@@ -52,7 +53,12 @@ def _generate_words_from_rack(rack):
     
     # If the rack has wildcards, we'll replace them with each possible letter and generate permutations
     wildcards = ['*', '?']
-    if any(wildcard in rack for wildcard in wildcards):
+    wild = False
+    for wildcard in wildcards:
+        if wildcard in rack:
+            wild = True
+
+    if wild:
         for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             temp_rack = rack
             for wildcard in wildcards:
