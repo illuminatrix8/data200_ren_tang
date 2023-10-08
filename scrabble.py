@@ -39,7 +39,7 @@ def run_scrabble(rack):
 
 def _generate_words_from_rack(rack):
     """
-    A helper function that generates all possible words from the given rack without considering wildcards. 
+    A helper function that generates all possible words from the given rack, considering wildcards.
 
     Args:
     - rack (str): The Scrabble rack.
@@ -49,9 +49,20 @@ def _generate_words_from_rack(rack):
     """
     rack = rack.upper()
     possible_words = set()  # Using a set to automatically handle duplicates
-
-    for length in range(2, len(rack) + 1):
-        for perm in permutations(rack, length):
-            possible_words.add(''.join(perm))
+    
+    # If the rack has wildcards, we'll replace them with each possible letter and generate permutations
+    wildcards = ['*', '?']
+    if any(wildcard in rack for wildcard in wildcards):
+        for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            temp_rack = rack
+            for wildcard in wildcards:
+                temp_rack = temp_rack.replace(wildcard, letter, 1)
+            for length in range(2, len(temp_rack) + 1):
+                for perm in permutations(temp_rack, length):
+                    possible_words.add(''.join(perm))
+    else:
+        for length in range(2, len(rack) + 1):
+            for perm in permutations(rack, length):
+                possible_words.add(''.join(perm))
     
     return list(possible_words)
