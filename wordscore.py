@@ -8,10 +8,6 @@ def score_word(word):
     """
     Calculate the score of the given word based on Scrabble letter values.
 
-    Args:
-    - word (str): The word to be scored.
-
-    Returns:
-    - int: The total score of the word.
+    Returns the total score of the word.
     """
     return sum(scores.get(letter.lower(), 0) for letter in word)

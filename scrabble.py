@@ -43,6 +43,16 @@ def _generate_words_from_rack(rack):
     rack = rack.upper()
     possible_words = set()
     
+    # wild card logic still has problem
+    # Test run_scrabble with an input rack of '?a' (0/5)
+    # Test Failed: False is not true : Expected: [(1, 'AA'), (1, 'AB'), (1, 'AD'), (1, 'AE'), (1, 'AG'), (1, 'AH'), (1, 'AI'), (1, 'AL'), (1, 'AM'), (1, 'AN'), (1, 'AR'), (1, 'AS'), (1, 'AT'), (1, 'AW'), (1, 'AX'), (1, 'AY'), (1, 'BA'), (1, 'DA'), (1, 'EA'), (1, 'FA'), (1, 'HA'), (1, 'JA'), (1, 'KA'), (1, 'LA'), (1, 'MA'), (1, 'NA'), (1, 'PA'), (1, 'TA'), (1, 'YA'), (1, 'ZA')]
+    # Test run_scrabble with an input rack of 'abc*' (0/5)
+    # Test Failed: False is not true : Returned word list result is not the same as expected
+    # Test run_scrabble with an input rack of 'QU*ZZ' (0/5)
+    # Test Failed: False is not true : Returned word list result is not the same as expected
+    # Test run_scrabble with an input rack of '*?' (0/5)
+    # Test Failed: False is not true : Returned word list result is not the same as expected
+
     if rack.count('*') + rack.count('?') == 2:  # both wildcards present
         for letter1 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             for letter2 in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
