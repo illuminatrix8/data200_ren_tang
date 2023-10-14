@@ -7,7 +7,6 @@ tweets = ["This is great! RT @fakeuser: Can you believe this?",
          "RT @dubsfan: I can't believe it!",
          "I can't believe it either! RT @dubsfan: I can't believe it"]
 
-
 def count_retweets_by_username(tweet_list):
     """ (list of tweets) -> dict of {username: int}
     Returns a dictionary in which each key is a username that was 
@@ -32,12 +31,6 @@ def count_retweets_by_username(tweet_list):
 
     return retweets_by_username
 
-
-# allow this code to work by implementing count_retweets_by_username function above
-print(count_retweets_by_username(tweets))
-
-
-
 deposits = [(0, 4, .3), (6, 2, 3), (3, 7, 2.2), (5, 5, .5), (3, 5, .8), (7, 7, .3)]
 
 def display(deposits, top, bottom, left, right):
@@ -58,13 +51,11 @@ def display(deposits, top, bottom, left, right):
     for row in range(top, top + num_rows):
         for col in range(left, left + num_columns):
             if any(r == row and c == col for r, c, d in deposits):
-                ans += 'x'
+                ans += 'X'
             else:
                 ans += '-'
         ans += '\n'
-    return ans
-
-print(display(deposits, 5, 8, 5, 8))
+    return ans.rstrip('\n')
 
 
 def tons_inside(deposits, top, bottom, left, right):
@@ -80,28 +71,17 @@ def tons_inside(deposits, top, bottom, left, right):
     num_rows = bottom - top
     num_columns = right - left
     grid = [['-' for _ in range(num_columns)] for _ in range(num_rows)]
+    total = 0.0
 
     # update the grid according to deposits
     for row in range(top, top + num_rows):
         for col in range(left, left + num_columns):
-            deposit_value = None
             for r, c, d in deposits:
                 if r == row and c == col:
-                    deposit_value = d
-                    break
-            ans += str(deposit_value) if deposit_value is not None else '-'
-        ans += '\n'
-    return ans
-
-print(tons_inside(deposits, 0, 8, 0, 8))
-
-
-# The 2nd to last tuple needs the int(2) in it so that it is uniquely stored in memory compared to (2,8)
-# Under the hood Python 3.7 changed how these are stored so (2,8) and (2,8) are stored in the same location
-# and then the algorithm below doesn't work
+                    total += d
+    return total
 
 dates = [(3,14),(2,8),(10,25),(5,17),(3,2),(7,25),(4,30),(8,7),(int(2),8),(1,22),(2, int(8))]
-
 
 def birthday_original(dates_list):
     count = 0
@@ -120,16 +100,21 @@ def birthday_original(dates_list):
     # We counted each pair twice (e.g. jane-bob and bob-jane) so divide by 2:          
     return count//2
 
-birthday_original(dates)
-
-
 def birthday_count(dates_list):
     """Returns the total number of birthday pairs in the dates_list"""
 
-    # somehow we need to turn this into sets
-    count = len(dates_list)
-    count_unique = len(set(dates_list))
+    birthday_counts = {}
 
-    return count - count_unique
+    for d in dates:
+        if d in birthday_counts:
+            birthday_counts[d] += 1
+        else:
+            birthday_counts[d] = 1
 
-birthday_count(dates)
+    count = 0
+
+    for counts in birthday_counts.values():
+        if counts > 1:
+            count += counts * (counts - 1) // 2
+
+    return count
