@@ -63,7 +63,7 @@ class Auction:
             is_winner = (bidder == first_place_bidder)
             bidder.notify(is_winner, second_place_bid, clicked, selected_user.user_id)
 
-
+'''
 if __name__ == "__main__":
     # TODO: Remove before submission or place in a separate file (like main.py)
 
@@ -81,3 +81,4 @@ if __name__ == "__main__":
     for round_number in range(num_rounds):
         print(f"{round_number=}")
         auction.execute_round()
+'''
