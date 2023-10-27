@@ -45,23 +45,33 @@ class Auction:
         selected_user = random.choice(self.users)  # Randomly select a user for this round
         bids = {}  # Initialize an empty dictionary to store bids from bidders
 
+        print(f"Selected User: {selected_user}")  # Log the selected user
+
         # Collect bids from all bidders
         for bidder in self.bidders:
             bid_amount = bidder.bid(selected_user.user_id)
             bids[bidder] = bid_amount
+
+        print(f"Bids: {bids}")  # Log the bids made by bidders
 
         # Determine the first and second place bidders based on the bids
         sorted_bids = sorted(bids.items(), key=lambda x: x[1], reverse=True)
         first_place_bidder, first_place_bid = sorted_bids[0]
         second_place_bidder, second_place_bid = sorted_bids[1]
 
+        print(f"First Place Bidder: {first_place_bidder}, Bid: {first_place_bid}")  # Log the first place bidder and bid
+        print(f"Second Place Bidder: {second_place_bidder}, Bid: {second_place_bid}")  # Log the second place bidder and bid
+
         # Show the ad to the selected user and check if they clicked it
         clicked = selected_user.show_ad()
+
+        print(f"Ad Clicked: {clicked}")  # Log whether the ad was clicked or not
 
         # Notify all bidders about the outcome of this auction round
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
             bidder.notify(is_winner, second_place_bid, clicked, selected_user.user_id)
+            print(f"Updated Bidder State: {bidder}")  # Log the updated state of each bidder
 
 '''
 if __name__ == "__main__":
