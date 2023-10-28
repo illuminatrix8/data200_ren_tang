@@ -38,10 +38,14 @@ class Auction:
         second_place_bidder, second_place_bid = sorted_bids[1]
         clicked = selected_user.show_ad()
         
+        # Update the balances here
+        if clicked:
+            self.balances[first_place_bidder] += 1  # Reward for the click
+        self.balances[first_place_bidder] -= second_place_bid  # Payment for the ad spot
+
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
             bidder.notify(is_winner, second_place_bid, clicked if is_winner else None)
-
 
 '''
 if __name__ == "__main__":

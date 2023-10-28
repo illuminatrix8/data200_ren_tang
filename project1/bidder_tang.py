@@ -13,8 +13,8 @@ class Bidder:
 
     def notify(self, auction_winner, price, clicked):
         if auction_winner:
-            self.__balance += 1 if clicked else 0
-            self.__balance -= price
+            self.__balance += 1 if clicked else 0  # Reward for the click
+            self.__balance -= price  # Payment for the ad spot
 
         # Existing logging code...
         unique_key = f"{random.randint(1, 1000)}_{random.randint(1, 1000)}"
