@@ -33,6 +33,11 @@ class Auction:
         for bidder in self.bidders:
             bid_amount = bidder.bid(selected_user_id)
             bids[bidder] = bid_amount
+
+        if len(self.bidders) < 2:
+            print("Not enough bidders for an auction round.")
+            return
+
         sorted_bids = sorted(bids.items(), key=lambda x: x[1], reverse=True)
         first_place_bidder, first_place_bid = sorted_bids[0]
         second_place_bidder, second_place_bid = sorted_bids[1]
@@ -40,6 +45,7 @@ class Auction:
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
             bidder.notify(is_winner, second_place_bid, clicked)
+
 
 '''
 if __name__ == "__main__":
