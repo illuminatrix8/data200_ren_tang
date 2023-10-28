@@ -1,13 +1,11 @@
 import random
-from bidder_tang import Bidder
+
+# from bidder_tang import Bidder
 
 class User:
-    user_count = 0  # Class-level counter to keep track of the number of User instances
+    user_count = 0  # Class-level counter
 
     def __init__(self):
-        """
-        Initialize a new User instance with a unique ID and a random click probability.
-        """
         self.__probability = random.uniform(0, 1)
         self.user_id = User.user_count
         User.user_count += 1
@@ -19,59 +17,29 @@ class User:
         return f"User of id: {self.user_id}"
 
     def show_ad(self):
-        """
-        Simulate showing an ad to the user and return True if the ad was clicked, False otherwise.
-        """
         return random.random() < self.__probability
-
 
 class Auction:
     def __init__(self, users, bidders):
-        """
-        Initialize the auction with given users and bidders.
-        
-        Args:
-            users (list): A list of User objects.
-            bidders (list): A list of Bidder objects.
-        """
         self.users = users
         self.bidders = bidders
-        self.balances = {}  # Placeholder for future functionality to track bidder balances
+        self.balances = {bidder: 0 for bidder in bidders}
+        self.user_ids = {user: i for i, user in enumerate(users)}  # Map User object to unique ID
 
     def execute_round(self):
-        """
-        Execute one round of the auction process.
-        """
-        selected_user = random.choice(self.users)  # Randomly select a user for this round
-        bids = {}  # Initialize an empty dictionary to store bids from bidders
-
-        print(f"Selected User: {selected_user}")  # Log the selected user
-
-        # Collect bids from all bidders
+        selected_user = random.choice(self.users)
+        selected_user_id = self.user_ids[selected_user]
+        bids = {}
         for bidder in self.bidders:
-            bid_amount = bidder.bid(selected_user.user_id)
+            bid_amount = bidder.bid(selected_user_id)
             bids[bidder] = bid_amount
-
-        print(f"Bids: {bids}")  # Log the bids made by bidders
-
-        # Determine the first and second place bidders based on the bids
         sorted_bids = sorted(bids.items(), key=lambda x: x[1], reverse=True)
         first_place_bidder, first_place_bid = sorted_bids[0]
         second_place_bidder, second_place_bid = sorted_bids[1]
-
-        print(f"First Place Bidder: {first_place_bidder}, Bid: {first_place_bid}")  # Log the first place bidder and bid
-        print(f"Second Place Bidder: {second_place_bidder}, Bid: {second_place_bid}")  # Log the second place bidder and bid
-
-        # Show the ad to the selected user and check if they clicked it
         clicked = selected_user.show_ad()
-
-        print(f"Ad Clicked: {clicked}")  # Log whether the ad was clicked or not
-
-        # Notify all bidders about the outcome of this auction round
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
-            bidder.notify(is_winner, second_place_bid, clicked, selected_user.user_id)
-            print(f"Updated Bidder State: {bidder}")  # Log the updated state of each bidder
+            bidder.notify(is_winner, second_place_bid, clicked)
 
 '''
 if __name__ == "__main__":
