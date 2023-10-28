@@ -33,6 +33,10 @@ class Auction:
         for bidder in self.bidders:
             bid_amount = bidder.bid(selected_user_id)
             bids[bidder] = bid_amount
+
+        if len(self.bidders) < 2:
+            return  # Not enough bidders to hold an auction
+
         sorted_bids = sorted(bids.items(), key=lambda x: x[1], reverse=True)
         first_place_bidder, first_place_bid = sorted_bids[0]
         second_place_bidder, second_place_bid = sorted_bids[1]
@@ -42,10 +46,11 @@ class Auction:
         if clicked:
             self.balances[first_place_bidder] += 1  # Reward for the click
         self.balances[first_place_bidder] -= second_place_bid  # Payment for the ad spot
-
+        
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
             bidder.notify(is_winner, second_place_bid, clicked if is_winner else None)
+
 
 '''
 if __name__ == "__main__":
