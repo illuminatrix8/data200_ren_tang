@@ -12,15 +12,10 @@ class Bidder:
         return round(bid_amount, 3)
 
     def notify(self, auction_winner, price, clicked):
-        print(f"Notification received: {'Won' if auction_winner else 'Lost'} the auction.")
-        print(f"Price paid by winner: {price}")
-        print(f"Ad clicked: {clicked}")
-
         if auction_winner:
             self.__balance += 1 if clicked else 0
             self.__balance -= price
 
-        # Use some way to generate a unique key for each round
-        # For example, a combination of the round number and user_id
+        # Existing logging code...
         unique_key = f"{random.randint(1, 1000)}_{random.randint(1, 1000)}"
         self.history[unique_key] = {'won': auction_winner, 'price': price, 'clicked': clicked}

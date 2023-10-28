@@ -24,7 +24,7 @@ class Auction:
         self.users = users
         self.bidders = bidders
         self.balances = {bidder: 0 for bidder in bidders}
-        self.user_ids = {user: i for i, user in enumerate(users)}  # Map User object to unique ID
+        self.user_ids = {user: i for i, user in enumerate(users)}
 
     def execute_round(self):
         selected_user = random.choice(self.users)
@@ -33,18 +33,14 @@ class Auction:
         for bidder in self.bidders:
             bid_amount = bidder.bid(selected_user_id)
             bids[bidder] = bid_amount
-
-        if len(self.bidders) < 2:
-            print("Not enough bidders for an auction round.")
-            return
-
         sorted_bids = sorted(bids.items(), key=lambda x: x[1], reverse=True)
         first_place_bidder, first_place_bid = sorted_bids[0]
         second_place_bidder, second_place_bid = sorted_bids[1]
         clicked = selected_user.show_ad()
+        
         for bidder in self.bidders:
             is_winner = (bidder == first_place_bidder)
-            bidder.notify(is_winner, second_place_bid, clicked)
+            bidder.notify(is_winner, second_place_bid, clicked if is_winner else None)
 
 
 '''
